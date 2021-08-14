@@ -1,45 +1,47 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User, auth
+from django.http.request import HttpRequest
 from django.contrib import messages
+from django.contrib.auth.models import User, auth
 
+from typing import NewType
+Request = NewType('Request', HttpRequest)
 # Create your views here.
-def home_view(request, *args, **kwargs):
-    # print(args, kwargs)
-    return render(request, template_name='index1.html', context={})
 
-def register_view(request, *args, **kwargs):
+def home_view(request:Request, *args, **kwargs):
+    return render(request, template_name='home.html')
+
+def register_view(request:Request, *args, **kwargs):
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
-        password = request.POST['password1']
+        password1 = request.POST['password1']
         password2 = request.POST['password2']
-        if password == password2:
+        if password1 == password2:
             if User.objects.filter(username=username).exists():
-                messages.info(request, "Name is used!")
+                messages.info(request, "User name existed!")
                 return redirect('register')
             elif User.objects.filter(email=email).exists():
-                messages.info(request, "Name is used!")
+                messages.info(request, "Email existed!")
                 return redirect('register')
-            else:
-                user = User.objects.create_user(username=username, email=email,password=password)
+            else: 
+                user = User.objects.create_user(username=username, email=email, password=password1)
                 user.save()
-                return redirect('login')
+                messages.info(request, "Account created successfully!")
+                return redirect('home')
         else:
-            messages.info(request, "Password Not Correct!")
-    else:
-        return render(request, template_name='register.html', context={})
+            messages.info(request, "password not match")
+            return redirect('register')
+    return render(request, template_name='register.html')
 
-def login_view(request, *args, **kwargs):
+def login_view(request:Request, *args, **kwargs):
     if request.method == 'POST':
         username = request.POST['username']
-        password = request.POST['password1']
-
+        password = request.POST['password']
         user = auth.authenticate(username=username, password=password)
-
         if user is not None:
             auth.login(request, user)
-            return redirect('react')
+            return redirect('home')
         else:
-            messages.info(request, 'User Name or Password is invalid!')
+            messages.info(request, 'Username or Password is invalid!')
             return redirect('login')
-    return render(request, 'login.html')
+    return render(request, template_name='login.html')

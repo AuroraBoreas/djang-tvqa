@@ -1,4 +1,4 @@
-"""django_project URL Configuration
+"""django_tvqa URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -13,15 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from os import name
 from django.contrib import admin
 from django.urls import path
 from users.views import home_view, register_view, login_view
-from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', home_view, name='home'),
     path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
-    path('', TemplateView.as_view(template_name='index.html'), name='react'),
 ]
