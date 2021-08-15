@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+  {% include 'navbar.html' %}
+
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-primary">
+        <li class="breadcrumb-item text-light font-weight-bold active" aria-current="page">
+          PMod Buyback BOM Search
+        </li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="container mb-3">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-row align-items-center">
+        <div class="col-auto">
+          <label class="sr-only" for="inlineFormInput">PMod name</label>
+          <input type="text" class="form-control mb-2" id="inlineFormInput" name="pmodname">
+        </div>
+        <div class="col-auto">
+          <label class="sr-only" for="inlineFormInput">Part number</label>
+          <input type="text" class="form-control mb-2" id="inlineFormInput" name="partnumber">
+        </div>
+        <div class="col-auto">
+          <label class="sr-only" for="inlineFormInputGroup"></label>
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">Year</div>
+            </div>
+            <input type="number" class="form-control" id="inlineFormInputGroup" name="bomyear" min="2012">
+          </div>
+        </div>
+        <div class="col-auto">
+          <label class="sr-only" for="inlineFormInputGroup"></label>
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">Month</div>
+            </div>
+            <input type="number" class="form-control" id="inlineFormInputGroup" name="bommonth" min="1" max="12">
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="autoSizingCheck" name="bomregistered">
+            <label class="form-check-label" for="autoSizingCheck">
+              BOM registered?
+            </label>
+          </div>
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary mb-2">Search</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="container">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">PMod name</th>
+                <th scope="col">Part number</th>
+                <th scope="col">Date created</th>
+                <th scope="col">Year quotated</th>
+                <th scope="col">Month quotated</th>
+                <th scope="col">Unit price(USD$)</th>
+                <th scope="col">BOM registered</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pmod in pmods %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ pmod.name }}</td>
+              <td>{{ pmod.part_number }}</td>
+              <td>{{ pmod.date_created }}</td>
+              <td>{{ pmod.year_quotated }}</td>
+              <td>{{ pmod.month_quotated }}</td>
+              <td>{{ pmod.unit_price }}</td>
+              <td>{{ pmod.BOM_registered }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

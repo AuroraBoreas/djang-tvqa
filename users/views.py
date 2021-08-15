@@ -1,15 +1,14 @@
 from django.shortcuts import render, redirect
-from django.http.request import HttpRequest
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from .form import UserRegisterForm
 
+from django.http.request import HttpRequest
 from typing import NewType
 Request = NewType('Request', HttpRequest)
-# Create your views here.
 
-def home_view(request:Request, *args, **kwargs):
-    return render(request, template_name='home.html')
+# def home_view(request:Request, *args, **kwargs):
+#     return render(request, template_name='home.html')
 
 def register_view(request:Request, *args, **kwargs):
     if request.method == 'POST':

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+  {% include 'navbar.html' %}
+
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-primary">
+        <li class="breadcrumb-item text-light font-weight-bold active" aria-current="page">PMod Buyback BOM Register Tracker</li>
+      </ol>
+    </nav>
+  </div>
+  {% if user.is_authenticated %}
+    {% for message in messages %}
+    <div class="container alert alert-success" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    <div class="container">
+      <form method="POST" action="">
+          {% csrf_token %}
+          <div class="form-group">
+            {{ form|crispy }}
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  {% else %}
+    <div class="container">
+      <p>
+        This page is for registered users only
+      </p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

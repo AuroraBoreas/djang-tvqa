@@ -1,0 +1,37 @@
+{% extends 'home.html' %}
+
+{% block articles %}
+<div class="container" id="articles-post">
+    <div class="posts-container mx-auto px-3 my-5">
+        <div class="posts">
+            <div class="post">
+                <h1 class="post-title fw-500">
+                    Hello, world!
+                </h1>
+                <p>
+                    Est nisi cupidatat magna sunt aliqua. Magna velit cupidatat minim cupidatat proident eiusmod deserunt. Ad pariatur veniam velit occaecat eiusmod. Anim adipisicing anim quis nisi esse veniam sit officia cupidatat qui occaecat. Minim elit cupidatat duis culpa consequat commodo deserunt pariatur. Irure aliqua laborum non aliqua amet enim.
+                </p>
+                <hr class="my-4">
+                <p>
+                    <strong>Jump to a section:</strong>
+                </p>
+                <ul>
+                    {% for post in posts %}
+                    <li><a href="#post{{post.id}}">{{ post.title }}</a></li>
+                    {% endfor %}
+                </ul>
+                <hr class="my-4">
+                {% for post in posts %}
+                <h2 id="post{{ post.id }}">{{ post.title }}</h2>
+                <p class="text-muted">
+                    <small>{{ post.author }}, {{ post.date_posted|date:"Y F d"}}</small>
+                </p>
+                <p>
+                    {{ post.content }}
+                </p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}
