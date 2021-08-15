@@ -58,20 +58,12 @@ def try_parse(s:str)->T:
 
 def pmod_bom_list_view(request:Request, *args, **kwargs):
     if request.method == 'POST':
-        # form = PModRegisterForm(request.POST)
-        # print(form.is_bound, form.is_valid())
-        # if form.is_valid():
         name           = request.POST.get('pmodname') or None
         part_number    = request.POST.get('partnumber') or None
         year_quotated  = try_parse(request.POST.get('bomyear'))
         month_quotated = try_parse(request.POST.get('bommonth'))
         BOM_registered = True if request.POST.get('bomregistered') == 'on' else False
-        # print("name: ", name, type(name)) 
-        # print("part_number: ", part_number, type(part_number)) 
-        # print("year_quotated: ", year_quotated, type(year_quotated)) 
-        # print("month_quotated: ", month_quotated, type(month_quotated)) 
-        # print("BOM_registered: ", BOM_registered, type(BOM_registered))
-        search_dict = {'BOM_registered':BOM_registered}
+        search_dict    = {'BOM_registered':BOM_registered} # multi-conditions
         if name:
             search_dict['name'] = name
         if part_number:
@@ -80,9 +72,7 @@ def pmod_bom_list_view(request:Request, *args, **kwargs):
             search_dict['year_quotated'] = year_quotated
         if month_quotated:
             search_dict['month_quotated'] = month_quotated
-
         pmods = PMod.objects.filter(**search_dict)
-        print(pmods)
         context = {
             'pmods': pmods
         }
