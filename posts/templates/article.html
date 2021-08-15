@@ -17,7 +17,7 @@
                 </p>
                 <ul>
                     {% for post in posts %}
-                    <li><a href="#post{{post.id}}">{{ post.title }}</a></li>
+                    <li><a href="#post{{ post.id }}">{{ post.title }}</a></li>
                     {% endfor %}
                 </ul>
                 <hr class="my-4">
@@ -27,7 +27,7 @@
                     <small>{{ post.author }}, {{ post.date_posted|date:"Y F d"}}</small>
                 </p>
                 <p>
-                    {{ post.content }}
+                    {{ post.content|safe }}
                 </p>
                 {% endfor %}
             </div>

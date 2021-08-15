@@ -8,13 +8,13 @@
   <div class="container">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb bg-primary">
-        <li class="breadcrumb-item text-light font-weight-bold active" aria-current="page">PMod Buyback BOM Register Tracker</li>
+        <li class="breadcrumb-item text-light font-weight-bold active" aria-current="page">PMod Buyback BOM Register</li>
       </ol>
     </nav>
   </div>
   {% if user.is_authenticated %}
     {% for message in messages %}
-    <div class="container alert alert-success" role="alert">
+    <div class="container alert alert-{{ message.tags }}" role="alert">
         {{ message }}
     </div>
     {% endfor %}

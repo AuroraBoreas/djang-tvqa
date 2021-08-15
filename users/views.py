@@ -14,25 +14,25 @@ def register_view(request:Request, *args, **kwargs):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
+            username  = form.cleaned_data.get('username')
+            email     = form.cleaned_data.get('email')
             password1 = form.cleaned_data.get('password1')
             password2 = form.cleaned_data.get('password2')
             if password1 == password2:
                 if User.objects.filter(username=username).exists():
-                    messages.info(request, "User name existed!")
-                    return redirect('register')
+                    messages.error(request, "User name existed!")
+                    return redirect('users:register')
                 elif User.objects.filter(email=email).exists():
-                    messages.info(request, "Email existed!")
-                    return redirect('register')
+                    messages.error(request, "Email existed!")
+                    return redirect('users:register')
                 else: 
                     user = User.objects.create_user(username=username, email=email, password=password1)
                     user.save()
-                    messages.info(request, "Account created successfully!")
-                    return redirect('register')
+                    messages.success(request, "Account created successfully!")
+                    return redirect('users:register')
             else:
-                messages.info(request, "password not match")
-                return redirect('register')
+                messages.error(request, "password not match")
+                return redirect('users:register')
     else:
         form = UserRegisterForm()
 

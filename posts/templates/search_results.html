@@ -1,0 +1,31 @@
+{% extends 'home.html' %}
+
+{% block content %}
+<div class="container">
+    {% include 'navbar.html' %}
+    <div class="container" id="articles-post">
+        <div class="posts-container mx-auto px-3 my-5">
+            <div class="posts">
+                <div class="post">
+                    <h1 class="post-title fw-500">
+                        Search results: found {{ object_list|length }}
+                    </h1>
+                    <hr class="my-4">
+                    {% for object in object_list %}
+                    {% comment ListView! %}
+                        ListView class, we can only use "object_list" in templates @ZL,20210815
+                    {% endcomment %}
+                    <h2 id="post{{ object.id }}">{{ object.title }}</h2>
+                    <p class="text-light">
+                        <small>{{ object.author }}, {{ object.date_posted|date:"Y F d"}}</small>
+                    </p>
+                    <p>
+                        {{ object.content|safe }}
+                    </p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

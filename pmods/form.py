@@ -7,9 +7,9 @@ class PModRegisterForm(ModelForm):
         fields = [
             'name',
             'part_number',
-            # 'date_created',
+            'date_created',
             'year_quotated',
             'month_quotated',
-            # 'unit_price',
+            'unit_price',
             'BOM_registered',
         ]

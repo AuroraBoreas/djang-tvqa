@@ -9,7 +9,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{% url 'posts:home' %}">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item dropdown">
         {% if user.is_authenticated %}
@@ -22,9 +22,9 @@
         </a>   
         {% endif %}
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'pmod_bom_create' %}">PMod RMA Buyback BOM Tracker</a>
+          <a class="dropdown-item" href="{% url 'pmods:pmod_bom_create' %}">PMod RMA Buyback BOM Tracker</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{% url 'pmod_bom_list' %}">PMod RMA Query</a>
+          <a class="dropdown-item" href="{% url 'pmods:pmod_bom_list' %}">PMod RMA Query</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">WW PMod SMLD</a>
           <div class="dropdown-divider"></div>
@@ -34,19 +34,19 @@
 
       {% if user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'logout' %}" tabindex="-1" aria-disabled="true">Log out</a>
+        <a class="nav-link" href="{% url 'users:logout' %}" tabindex="-1" aria-disabled="true">Log out</a>
       </li>
       {% else %}
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'register' %}" tabindex="-1" aria-disabled="true">Register</a>
+        <a class="nav-link" href="{% url 'users:register' %}" tabindex="-1" aria-disabled="true">Register</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'login' %}" tabindex="-1" aria-disabled="true">Log in</a>
+        <a class="nav-link" href="{% url 'users:login' %}" tabindex="-1" aria-disabled="true">Log in</a>
       </li>
       {% endif %}
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <form class="form-inline my-2 my-lg-0" action="{% url 'posts:search_results' %}"  method="GET">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="q">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
   </div>

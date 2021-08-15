@@ -11,7 +11,7 @@
     </nav>
   </div>
   {% for message in messages %}
-  <div class="container alert alert-success" role="alert">
+  <div class="container alert alert-{{ message.tags }}" role="alert">
     {{ message }}
   </div>
   {% endfor %}
