@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block replaceme %}
+<div class="container">
+  {% include 'navbar.html' %}
+
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-primary">
+        <li class="breadcrumb-item text-light font-weight-bold active" aria-current="page">Join Today</li>
+      </ol>
+    </nav>
+  </div>
+
+  {% for message in messages %}
+  <div class="container alert alert-success" role="alert">
+      {{ message }}
+  </div>
+  {% endfor %}
+
+  <div class="container">
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ form|crispy }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

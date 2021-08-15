@@ -1,0 +1,35 @@
+{% extends 'base.html' %}    
+
+{% block replaceme %}
+<div class="container">
+  {% include 'navbar.html' %}
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-primary">
+        <li class="breadcrumb-item text-light active" aria-current="page">Log in</li>
+      </ol>
+    </nav>
+  </div>
+  {% for message in messages %}
+  <div class="container alert alert-success" role="alert">
+    {{ message }}
+  </div>
+  {% endfor %}
+
+  <div class="container">
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="exampleInputEmail1">User name</label>
+        <input type="text" class="form-control" name="username" aria-describedby="emailHelp" placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>        
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" name="password" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

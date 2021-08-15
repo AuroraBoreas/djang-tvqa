@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block replaceme %}
+<div class="container">
+  {% include 'navbar.html' %}
+
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb fs-2">
+        <li class="breadcrumb-item text-muted" aria-current="page">
+            You have been logged out
+        </li>
+    </nav>
+  </div>
+  <hr class="my-4">
+  <div class="container">
+    <p>
+        <a href="{% url 'login' %}">Log In Again</a>
+    </p>
+  </div>
+
+{% endblock %}
