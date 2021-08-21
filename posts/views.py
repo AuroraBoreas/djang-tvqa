@@ -21,7 +21,7 @@ class SearchResultsView(ListView):
             Q(title__icontains=query) | Q(content__icontains=query)
         )
         if posts.exists():
-            print(posts)
+            # print(posts)
             return posts
         else:
             return Post.objects.none()

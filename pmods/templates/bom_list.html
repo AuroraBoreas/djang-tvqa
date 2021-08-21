@@ -16,46 +16,46 @@
   </div>
 
   <div class="container mb-3">
-    <form method="POST">
+    <form method="POST" action="">
       {% csrf_token %}
       <div class="form-row align-items-center">
         <div class="col-auto">
           <label class="sr-only" for="inlineFormInput">PMod name</label>
-          <input type="text" class="form-control mb-2" id="inlineFormInput" name="pmodname" placeholder="AG85">
+          {{ form.name|as_crispy_field }}
         </div>
         <div class="col-auto">
           <label class="sr-only" for="inlineFormInput">Part number</label>
-          <input type="text" class="form-control mb-2" id="inlineFormInput" name="partnumber" placeholder="A5030086B">
+          {{ form.part_number|as_crispy_field }}
         </div>
         <div class="col-auto">
           <label class="sr-only" for="inlineFormInputGroup"></label>
           <div class="input-group mb-2">
             <div class="input-group-prepend">
-              <div class="input-group-text">Year</div>
+              {{ form.year_quotated|as_crispy_field }}
             </div>
-            <input type="number" class="form-control" id="inlineFormInputGroup" name="bomyear" min="2012" placeholder="2021">
           </div>
         </div>
         <div class="col-auto">
           <label class="sr-only" for="inlineFormInputGroup"></label>
           <div class="input-group mb-2">
             <div class="input-group-prepend">
-              <div class="input-group-text">Month</div>
             </div>
-            <input type="number" class="form-control" id="inlineFormInputGroup" name="bommonth" min="1" max="12" placeholder="1">
+            {{ form.month_quotated|as_crispy_field }}
           </div>
         </div>
         <div class="col-auto">
           <div class="form-check mb-2">
-            <input class="form-check-input" type="checkbox" id="autoSizingCheck" name="bomregistered">
-            <label class="form-check-label" for="autoSizingCheck">
-              BOM registered?
-            </label>
+            {{ form.BOM_registered|as_crispy_field }}
           </div>
         </div>
         <div class="col-auto">
-          <button type="submit" class="btn btn-primary mb-2">Search</button>
+          <div class="form-check mb-2">
+            {{ form.export_to_csv|as_crispy_field }}
+          </div>
         </div>
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-2">Search</button>
       </div>
     </form>
   </div>

@@ -1,18 +1,19 @@
 from django.core.checks import messages
-from django.shortcuts import redirect, render, get_list_or_404
+from django.http.response import HttpResponse
+from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.db.models.functions import Upper
 from django.db.models import Value
-from .form import PModRegisterForm, PMod
+import csv
+from .form import PModRegisterForm, PMod, PModSearchForm
 
 from django.http.request import HttpRequest
-from typing import NewType, Type, TypeVar
+from typing import NewType
 Request = NewType('Request', HttpRequest)
-T = TypeVar('T', None, int)
 
 def pmod_bom_create_view(request:Request, *args, **kwargs):
     if request.method == 'POST':
-        form = PModRegisterForm(request.POST)
+        form = PModRegisterForm(request.POST or None)
         if form.is_valid():
             name           = form.cleaned_data.get('name')
             part_number    = form.cleaned_data.get('part_number')
@@ -28,7 +29,7 @@ def pmod_bom_create_view(request:Request, *args, **kwargs):
                                         month_quotated__iexact=month_quotated,
                                         # BOM_registered__iexact=BOM_registered,
                 )
-                print(pmods)
+                # print(pmods)
             except PMod.DoesNotExist:
                 pmods = None
             if pmods.exists():
@@ -54,36 +55,52 @@ def pmod_bom_create_view(request:Request, *args, **kwargs):
     }
     return render(request, template_name='bom_create.html', context=context)
 
-def try_parse(s:str)->T:
-    try:
-        rv = int(s)
-    except ValueError:
-        rv = None
-    return rv
-
 def pmod_bom_list_view(request:Request, *args, **kwargs):
+    form = PModSearchForm(request.POST or None)
+    qs = PMod.objects.all()
+    context = {
+        'form'  : form,
+        'pmods' : qs
+    }
     if request.method == 'POST':
-        name           = request.POST.get('pmodname') or None
-        part_number    = request.POST.get('partnumber') or None
-        year_quotated  = try_parse(request.POST.get('bomyear'))
-        month_quotated = try_parse(request.POST.get('bommonth'))
-        BOM_registered = True if request.POST.get('bomregistered') == 'on' else False
-        search_dict    = {'BOM_registered':BOM_registered} # multi-conditions
-        if name:
-            search_dict['name'] = name.upper()
-        if part_number:
-            search_dict['part_number'] = part_number.upper()
-        if year_quotated:
-            search_dict['year_quotated'] = year_quotated
-        if month_quotated:
-            search_dict['month_quotated'] = month_quotated
-        pmods = PMod.objects.filter(**search_dict)
+        form = PModSearchForm(request.POST or None) 
+        search_dict = {}
+        if form['name'].value():
+            search_dict['name'] = form['name'].value()
+        if form['date_created'].value():
+            search_dict['date_created'] = form['date_created'].value()
+        if form['year_quotated'].value():
+            search_dict['year_quotated'] = form['year_quotated'].value()
+        if form['month_quotated'].value():
+            search_dict['month_quotated'] = form['month_quotated'].value()
+        if form['BOM_registered'].value():
+            search_dict['BOM_registered'] = form['BOM_registered'].value()
+        # print(search_dict)
+        qs = PMod.objects.filter(**search_dict)
+        # print(qs)
         context = {
-            'pmods': pmods
+            'form' : form,
+            'pmods': qs
         }
-        return render(request, template_name='bom_list.html', context=context)
-    else:
-        return render(request, template_name='bom_list.html')
+        if form['export_to_csv'].value():
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="pmod_buyback.csv"'
+            writer = csv.writer(response)
+            writer.writerow([
+                'name',
+                'part_number',
+                'date_created',
+                'year_quotated',
+                'month_quotated',
+                'unit_price',
+                'BOM_registered',
+            ])            
+            for row in qs.values_list():
+                writer.writerow(row)
+            return response
+        else:
+            return render(request, template_name='bom_list.html', context=context)
+    return render(request, template_name='bom_list.html', context=context)
 
 def pmod_bom_update_view(request:Request, *args, **kwargs):
     pass
